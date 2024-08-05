@@ -1,0 +1,80 @@
+DOCKER:
+
+it creates isolated environment which is called containers.
+We can run multiple versions of a application(node14 version in one container and node 9 version in another) side by side in the same machine without any trouble using containers.
+
+Diff between VM and containers:
+Similar to containers we can run multiple version of application in two VMs in the same machine . But the problem is each VM should be installed with the OS and lincensed .
+It is slow to start . It will take up space of the machine .
+But in container , there is no need for seperate OS , the containers share the OS of the host machine .
+
+Architecture :
+
+Client ---> REST API -----> Docker engine
+
+Containers shares the OS of the host machine as well as the Kernel of the host machine .
+
+Images:
+Images consist of all the files and application we want to deploy inside it.
+
+Container:
+Process/isolated environment in which we can run the image in an isolated environment. 
+
+
+Steps:
+
+1. in command promt - 
+
+docker login
+
+2. docker tag hello-docker krishvish/hello-docker:latest   ---> krishvish/hello-docker respository in docker hub
+					|			|			|
+					|			|			|
+				image name	username	image name	
+
+here we are tagging the image we created in the local machine to the repository in the docker hub under same user.
+
+3. in order to push the image to the docker hub use the command :
+
+docker push krishvish/hello-docker:latest
+
+3.  in order to use this image in some other machine, we use the following command :
+
+docker pull krishvish/hello-docker
+
+this will pull the contents of the image in the krishvish/hello-docker repository in the docker hub .
+
+4. in order to run the application , use the command :
+
+docker run hello-docker
+
+Image : the actual package consists of all the application that can be moved around with others.
+Container : isolated environment when you start the application .
+Tags : version of the image.
+
+Difference between docker and VMs:
+In docker , it virtualizes the application layer which consists of application of some kernel,application of ours etc. Here, the application is run by the host kernel since docker
+doesnt virtualise OS kernel . they run faster coz it doesnt depend on OS kernel. Compatibility is less .Ex linux image with windows host. 
+
+In VMs, it virtualizes both the application layer and the OS kernel . they take time to load.It is more compatible
+
+Basic commands:
+1. docker pull <Image name> - downloads the image in local.
+2. docker images - displays the list of images in our local
+3. docker run <image name> - starts the image and creates container environment for that image.
+4. docker ps - stats of all the running conatiner .
+5. ctrl+c - to stop the container
+6. docker stop <Container ID> - to stop
+7. docker start <Container ID> - to start the container environment. 
+8. docker ps -a - displays the history of the container runs.
+9. docker pull <Image name>:4.0 - downloads the image with version 4.0 in local.
+10. docker run -p6000:6379 redis - starts the image redis by binding host port 6000 with container port 6379
+11. docker run -p6000:6379 redis:4.0 - it will throw error coz host port 6000 is already bind to image redis.
+12. docker logs <container id or name> - shows logs
+13. docker run -d -p6001:6379 --name redis-older redis:4.0 - gives name to the container as redis-older , -d is detached mode , -p is for binding port .
+14. docker exec -it <ContainerID> /bin/bash - opens a terminal inside the container - like in the root folder of linux , which we use to navigate inside the container .
+15. Exit - to exit the container terminal
+16. docker-compose -f mongo.yaml up - to start container using docker-compose files
+
+
+Ports: container can have same ports for diff image but the host port should differ.
